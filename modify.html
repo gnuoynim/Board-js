@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <title>수정페이지</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="post">
+      <p>Register a Post</p>
+      <ul>
+        <li>
+          <label>ID</label>
+          <span id="id"></span>
+        </li>
+        <li>
+          <label>Title</label>
+          <input id="title" />
+        </li>
+        <li>
+          <label>Name</label>
+          <input id="name" />
+        </li>
+        <li>
+          <label>Content</label>
+          <textarea id="content"></textarea>
+        </li>
+      </ul>
+      <div class="buttonBox">
+        <button type="button" class="postButton" id="modify">수정</button>
+        <button type="button" class="postButton" id="delete">삭제</button>
+      </div>
+     
+    </div>
+   
+    <script>
+      $(function () {
+        const url = new URL(location.href);
+        const searchParams = url.searchParams;
+        const id = searchParams.get("id");
+
+        $.ajax({
+          type: "get",
+          url: `https://api.cozyfex.com/api/base-board/${id}/`,
+          data: {},
+          dataType: "json",
+          headers: {
+            Authorization: "Token a6e827f558105cd66b1f62b46500d39ba0764cc7",
+          },
+          success: (response) => {
+            $("#id").text(response.id);
+            $("#name").val(response.name);
+            $("#content").val(response.content);
+            $("#title").val(response.title);
+          },
+        });
+        $("#modify").click(function (response) {
+
+          const name = $("#name").val();
+          const title = $("#title").val();
+          const content = $("#content").val();
+
+          $.ajax({
+            type: "put",
+            url: `https://api.cozyfex.com/api/base-board/${id}/`,
+            data: { title, name, content },
+            dataType: "json",
+            headers: {
+              Authorization: "Token a6e827f558105cd66b1f62b46500d39ba0764cc7",
+            },
+            success: (response) => {
+              location.href=`./view.html?id=${id}`;
+            },
+          });
+        });
+        $("#delete").click(function(){
+          $.ajax({
+            type:"delete",
+            url:`https://api.cozyfex.com/api/base-board/${id}/`,
+            headers: {
+              Authorization: "Token a6e827f558105cd66b1f62b46500d39ba0764cc7",
+            },
+            success:(response)=>{
+              location.href="./list.html"
+            }
+          })
+        })
+      });
+    </script>
+  </body>
+</html>

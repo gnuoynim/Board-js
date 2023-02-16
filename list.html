@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="./style.css" />
+    <title>게시판</title>
+  </head>
+  <body>
+    <div>
+      <p>Noction Board</p>
+      <div id="board">
+        <table>
+          <thead>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Name</th>
+            <th>Content</th>
+            <th>등록일</th>
+            <th>수정일</th>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div class="pageCount"></div>
+        <div class="buttonBox">
+            <button type="button" id="enroll" class="postButton">등록</button>
+        </div>
+
+      </div>
+    </div>
+    <script>
+      $(function () {
+        board();
+        $(".pageCount").on("click", "span", function () {
+          const page = $(this).text();
+          board(page);
+        });
+      });
+      $("table").on("click", "tr", function () {
+        const id = $(this).data("id");
+        console.log(id);
+        location.href = `./view.html?id=${id}`;
+      });
+      function board(page = 1) {
+        $.ajax({
+          type: "get",
+          url: `https://api.cozyfex.com/api/base-board/?page=${page}`,
+          data: {},
+          dataType: "json",
+          headers: {
+            Authorization: "Token a6e827f558105cd66b1f62b46500d39ba0764cc7",
+          },
+          success: function (response) {
+            const a = response.results;
+            console.log(a);
+            let html = "";
+            a.forEach((value) => {
+              html += `
+                <tr data-id = '${value.id}'>
+                    <td><input type="checkbox"><span>${value.id}</span></td>
+                    <td>${value.title}</td>
+                    <td>${value.name}</td>
+                    <td><div>${value.content}</div></td>
+                    <td>${value.reg_date}</td>
+                    <td>${value.mod_date}</td>
+                </tr>
+                `;
+
+              const page = Math.ceil(response.count / 10);
+              let pageNumber = "";
+
+              for (i = 1; i < page; i++) {
+                pageNumber += `<span>${i}</span>`;
+              }
+              $("tbody").empty().append(html);
+
+              $(".pageCount").empty().append(pageNumber);
+
+            //   $(".pageCount span").on("click", function () {
+            //     console.log(this);
+            //     $(this).addClass("on");
+            //   });
+
+            });
+            $("#enroll").on("click", function () {
+              location.href = "./write.html";
+            });
+          },
+        });
+      }
+    </script>
+  </body>
+</html>

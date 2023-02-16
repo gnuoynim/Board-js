@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="./style.css" />
+    <title>게시물 등록</title>
+  </head>
+  <body>
+    <div id="post">
+      <p>Register a Post</p>
+      <ul>
+        <li>
+          <label>Title</label>
+          <input id="title" />
+        </li>
+        <li>
+          <label>Name</label>
+          <input id="name" />
+        </li>
+        <li>
+          <label>Content</label>
+          <textarea id="content"></textarea>
+        </li>
+      </ul>
+      <div class="buttonBox">
+        <button type="button" class="postButton" id="save">등록</button>
+      </div>
+    </div>
+    <script>
+      $(function () {
+        $("#save").click(function () {
+          const title = $("#title").val();
+          const name = $("#name").val();
+          const content = $("#content").val();
+
+          if (!title) {
+            alert("title 을 입력해주세요");
+            title.focus();
+            return false;
+          }
+          if (!name) {
+            alert("name 을 입력해주세요");
+            name.focus();
+            return false;
+          }
+          if (!content) {
+            alert("content 을 입력해주세요");
+            content.focus();
+            return false;
+          }
+          
+          $.ajax({
+            type: "post",
+            url: "https://api.cozyfex.com/api/base-board/",
+            data: {
+              title,
+              name,
+              content,
+            },
+            dataType: "json",
+            headers: {
+              Authorization: "Token a6e827f558105cd66b1f62b46500d39ba0764cc7",
+            },
+            success: (response) => {
+              $("#name").val("");
+              $("#title").val("");
+              $("#content").val("");
+              location.href = "./list.html";
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

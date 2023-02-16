@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=ß, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="view">
+      <p>View</p>
+      <ul class="view">
+        <li>ID <span id="id"></span></li>
+        <li>Title : <span id="title"></span></li>
+        <li>Name : <span id="name"></span></li>
+        <li>Content : <span id="content"></span></li>
+      </ul>
+      <div class="buttonBox">
+        <button type="button" id="modify" class="postButton modify">
+          수정
+        </button>
+        <button type="button" id="list" class="postButton">목록</button>
+      </div>
+      <script>
+        $(function () {
+          const url = new URL(location.href);
+          const searchParams = url.searchParams;
+          console.log(searchParams.get("id"));
+          const id = searchParams.get("id");
+
+          $.ajax({
+            type: "get",
+            url: `https://api.cozyfex.com/api/base-board/${id}/`,
+            data: {},
+            dataType: "json",
+            headers: {
+              Authorization: "Token a6e827f558105cd66b1f62b46500d39ba0764cc7",
+            },
+            success: (response) => {
+              $("#id").text(response.id);
+              $("#title").text(response.title);
+              $("#name").text(response.name);
+              $("#content").text(response.content);
+            },
+          });
+
+          $("#modify").click(function () {
+            location.href = `./modify.html?id=${id}`;
+            console.log("this");
+          });
+
+          $("#list").click(function () {
+            location.href = "./list.html";
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>
