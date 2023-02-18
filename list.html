@@ -25,9 +25,8 @@
         </table>
         <div class="pageCount"></div>
         <div class="buttonBox">
-            <button type="button" id="enroll" class="postButton">등록</button>
+          <button type="button" id="enroll" class="postButton">등록</button>
         </div>
-
       </div>
     </div>
     <script>
@@ -54,7 +53,7 @@
           },
           success: function (response) {
             const a = response.results;
-            console.log(a);
+
             let html = "";
             a.forEach((value) => {
               html += `
@@ -68,21 +67,18 @@
                 </tr>
                 `;
 
-              const page = Math.ceil(response.count / 10);
+              const pageNum = Math.ceil(response.count / 10);
               let pageNumber = "";
 
-              for (i = 1; i < page; i++) {
-                pageNumber += `<span>${i}</span>`;
+              for (i = 1; i < pageNum; i++) {
+                if (page == i) {
+                  pageNumber += `<span class="on">${i}</span>`;
+                } else {
+                  pageNumber += `<span>${i}</span>`;
+                }
               }
               $("tbody").empty().append(html);
-
               $(".pageCount").empty().append(pageNumber);
-
-            //   $(".pageCount span").on("click", function () {
-            //     console.log(this);
-            //     $(this).addClass("on");
-            //   });
-
             });
             $("#enroll").on("click", function () {
               location.href = "./write.html";
