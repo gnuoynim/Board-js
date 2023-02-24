@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.7/dayjs.min.js"></script>
     <link rel="stylesheet" href="./style.css" />
     <title>게시판</title>
   </head>
@@ -53,17 +54,21 @@
           },
           success: function (response) {
             const a = response.results;
-
+            console.log(a)
             let html = "";
             a.forEach((value) => {
+              const regDate = value.reg_date;
+              const modDate = value.mod_date;
+              let newDay = dayjs(regDate).format('YYYY-MM-DD HH:mm')
+              let modDay = dayjs(modDate).format('YYYY-MM-DD HH:MM');
               html += `
                 <tr data-id = '${value.id}'>
                     <td><input type="checkbox"><span>${value.id}</span></td>
                     <td>${value.title}</td>
                     <td>${value.name}</td>
                     <td><div>${value.content}</div></td>
-                    <td>${value.reg_date}</td>
-                    <td>${value.mod_date}</td>
+                    <td>${newDay}</td>
+                    <td>${modDay}</td>
                 </tr>
                 `;
 
