@@ -5,13 +5,13 @@
   고유값 ID을 통해 <br/>
   데이터를 전달할 url<br/>
   type: "get",<br/>
-  dataType: "json", // 응답 데이터 형식<br/>
+  dataType: "json", 응답 데이터 형식<br/>
   success : ajax 통신 성공 시 실행 할 함수, 참고로 해당 매개변수에는 ajax 를 통해서 응답받은 데이터가 들어온다.<br/>
 </p>
+
+
+<h3>게시판 - CRUD 기능, 조회수, 페이징</h3>
 <ul>
-  <li>
-    <p>게시판 - CRUD 기능, 조회수, 페이징</p>
-  </li> 
   <li>
     게시글 목록 조회 페이지
   </li>
